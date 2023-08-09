@@ -15,12 +15,13 @@ Body::Body()
 
 void Body::ReachInitialPosition()
 {
-    _Legs.at(0)->SetDefaultPos(94, 96, 90);
-    _Legs.at(1)->SetDefaultPos(90, 93, 90);
-    _Legs.at(2)->SetDefaultPos(89, 89, 98);
-    _Legs.at(3)->SetDefaultPos(90, 98, 90);
-    _Legs.at(4)->SetDefaultPos(90, 102, 79);
-    _Legs.at(5)->SetDefaultPos(90, 104, 92);
+    // fine tune those values to suit your specific build
+    _Legs.at(0)->SetDefaultPos(75, 96, 90);
+    _Legs.at(1)->SetDefaultPos(90, 93, 92);
+    _Legs.at(2)->SetDefaultPos(102, 89, 98);
+    _Legs.at(3)->SetDefaultPos(90, 98, 86);
+    _Legs.at(4)->SetDefaultPos(90, 102, 75);
+    _Legs.at(5)->SetDefaultPos(90, 104, 88);
 
     _OnPosition = true;
 }
@@ -29,19 +30,47 @@ void Body::SetStancePosition()
 {
     Point stancePoint = Point(50, 60);
 
-    for (Leg *leg : _Legs)
+    for (int i = 0; i < _Legs.size(); i++)
     {
-        leg->DetermineServoAngles(stancePoint);
+        _Legs.at(i)->DetermineServoAngles(stancePoint, _StanceAngles[i]);
     }
+
+    _OnPosition = false;
 }
 
-void Body::StandUp()
+void Body::SetNextStepPosition()
 {
+    Point forwardPoint = Point(45, 50);
+    Point stancePoint = Point(50, 60);
+
+    for (int i = _StepNumber % 2; i < _Legs.size(); i += 2)
+    {
+        _Legs.at(i)->DetermineServoAngles(forwardPoint, _StanceAngles[i] + 15);
+    }
+
+    for (int i = (_StepNumber + 1) % 2; i < _Legs.size(); i += 2)
+    {
+        _Legs.at(i)->DetermineServoAngles(stancePoint, _StanceAngles[i]);
+    }
+
+    _OnPosition = false;
+    _StepNumber++;
+}
+
+void Body::MoveToPosistion()
+{
+    bool onPos = true;
+
     for (Leg *leg : _Legs)
     {
-        if (!leg->OnPosition)
+        if (leg->OnPosition)
         {
-            leg->ExecuteMovement();
+            continue;
         }
+
+        leg->ExecuteMovement();
+        onPos = false;
     }
+
+    _OnPosition = onPos;
 }

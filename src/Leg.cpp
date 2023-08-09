@@ -64,7 +64,7 @@ void Leg::DetermineServoAngles(Point point, int coxaAngle)
 
     short sideConstant = _Left ? 1 : -1;
 
-    int coxaToWrite = _CoxaInfo.JointBase + sideConstant * (90 - coxaAngle);
+    int coxaToWrite = _CoxaInfo.JointBase + (sideConstant * coxaAngle);
 
     int femurToWrite = _FemurInfo.JointBase + sideConstant * (180 - (baseAngle + femurAngle));
 
@@ -94,7 +94,7 @@ void Leg::ExecuteMovement()
     (*_FemurJoint).write(_FemurInfo.JointCurrent);
     (*_TibiaJoint).write(_TibiaInfo.JointCurrent);
 
-    OnPosition = abs(_CoxaInfo.JointDestination - _CoxaInfo.JointCurrent) < 0.1 &&
-                 abs(_FemurInfo.JointDestination - _FemurInfo.JointCurrent) < 0.1 &&
-                 abs(_TibiaInfo.JointDestination - _TibiaInfo.JointCurrent) < 0.1;
+    OnPosition = abs(_CoxaInfo.JointDestination - _CoxaInfo.JointCurrent) < 0.2 &&
+                 abs(_FemurInfo.JointDestination - _FemurInfo.JointCurrent) < 0.2 &&
+                 abs(_TibiaInfo.JointDestination - _TibiaInfo.JointCurrent) < 0.2;
 }

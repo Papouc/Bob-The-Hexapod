@@ -7,11 +7,16 @@
 class Body
 {
 private:
-    std::vector<Leg*> _Legs; 
+    std::vector<Leg *> _Legs;
+    int _StanceAngles[6]{-20, 0, 20, -20, 0, 20};
+    int _StepNumber{0};
     bool _OnPosition{false};
+
 public:
     Body();
     void ReachInitialPosition();
     void SetStancePosition();
-    void StandUp();
+    void SetNextStepPosition();
+    void MoveToPosistion();
+    inline bool IsOnPosition() { return _OnPosition; }
 };
