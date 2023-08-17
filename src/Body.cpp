@@ -1,5 +1,6 @@
 #include "Body.h"
 #include "PinLayout.h"
+#include "StraightStepCounter.h"
 
 Body::Body()
 {
@@ -11,6 +12,8 @@ Body::Body()
     _Legs.push_back(new Leg(LEG_4_COXA_PIN, LEG_4_FEMUR_PIN, LEG_4_TIBIA_PIN, false));
     _Legs.push_back(new Leg(LEG_5_COXA_PIN, LEG_5_FEMUR_PIN, LEG_5_TIBIA_PIN, false));
     _Legs.push_back(new Leg(LEG_6_COXA_PIN, LEG_6_FEMUR_PIN, LEG_6_TIBIA_PIN, false));
+
+    _StepCounter = new StraightStepCounter();
 }
 
 void Body::ReachInitialPosition()
@@ -40,17 +43,21 @@ void Body::SetStancePosition()
 
 void Body::SetNextStepPosition()
 {
-    Point forwardPoint = Point(45, 50);
-    Point stancePoint = Point(50, 60);
-
-    for (int i = _StepNumber % 2; i < _Legs.size(); i += 2)
+    if (_StepNumber % 3 == 0)
     {
-        _Legs.at(i)->DetermineServoAngles(forwardPoint, _StanceAngles[i] + 15);
+        _StepCounter->Flip();
     }
 
-    for (int i = (_StepNumber + 1) % 2; i < _Legs.size(); i += 2)
+    StepContainer info = _StepCounter->GetStepInfo(_StepNumber);
+
+    for (int i = 0; i < _Legs.size(); i += 2)
     {
-        _Legs.at(i)->DetermineServoAngles(stancePoint, _StanceAngles[i]);
+        _Legs.at(i)->DetermineServoAngles(info.EvenMovetTo, _StanceAngles[i] + info.EvenRotation);
+    }
+
+    for (int i = 1; i < _Legs.size(); i += 2)
+    {
+        _Legs.at(i)->DetermineServoAngles(info.OddMoveTo, _StanceAngles[i] + info.OddRotation);
     }
 
     _OnPosition = false;
