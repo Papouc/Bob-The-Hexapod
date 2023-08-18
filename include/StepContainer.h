@@ -3,7 +3,7 @@
 
 struct StepContainer
 {
-    Point EvenMovetTo;
+    Point EvenMoveTo;
     Point OddMoveTo;
     int EvenRotation;
     int OddRotation;    

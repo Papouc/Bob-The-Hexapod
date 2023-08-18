@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include "Leg.h"
 #include "StepCounter.h"
+#include "Direction.h"
 
 #define NUMBER_OF_LEGS 6
 
@@ -19,7 +20,7 @@ public:
     Body();
     void ReachInitialPosition();
     void SetStancePosition();
-    void SetNextStepPosition();
+    void SetNextStepPosition(enum Direction direction);
     void MoveToPosistion();
     inline bool IsOnPosition() { return _OnPosition; }
 };

@@ -41,7 +41,7 @@ void Body::SetStancePosition()
     _OnPosition = false;
 }
 
-void Body::SetNextStepPosition()
+void Body::SetNextStepPosition(enum Direction direction)
 {
     if (_StepNumber % 3 == 0)
     {
@@ -50,9 +50,12 @@ void Body::SetNextStepPosition()
 
     StepContainer info = _StepCounter->GetStepInfo(_StepNumber);
 
+    info.EvenRotation *= (direction == Direction::FORWARD) ? 1 : -1;
+    info.OddRotation *= (direction == Direction::FORWARD) ? 1 : -1;
+
     for (int i = 0; i < _Legs.size(); i += 2)
     {
-        _Legs.at(i)->DetermineServoAngles(info.EvenMovetTo, _StanceAngles[i] + info.EvenRotation);
+        _Legs.at(i)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[i] + info.EvenRotation);
     }
 
     for (int i = 1; i < _Legs.size(); i += 2)

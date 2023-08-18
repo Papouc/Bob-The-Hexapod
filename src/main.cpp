@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "Body.h"
 
-#define TIMER_PERIOD 8
+#define TIMER_PERIOD 5
 
 Body *_Body = nullptr;
 
@@ -23,9 +23,9 @@ void loop()
 {
     currMillis = millis();
 
-    if (_Body->IsOnPosition()) 
+    if (_Body->IsOnPosition())
     {
-        _Body->SetNextStepPosition();
+        _Body->SetNextStepPosition(Direction::FORWARD);
     }
 
     if (currMillis - prevMillis >= TIMER_PERIOD)

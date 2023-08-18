@@ -81,13 +81,13 @@ void Leg::DetermineServoAngles(Point point, int coxaAngle)
 
 void Leg::ExecuteMovement()
 {
-    _CoxaInfo.JointCurrent = (_CoxaInfo.JointDestination * 0.04) + (_CoxaInfo.JointPrevious * 0.96);
+    _CoxaInfo.JointCurrent = (_CoxaInfo.JointDestination * 0.05) + (_CoxaInfo.JointPrevious * 0.95);
     _CoxaInfo.JointPrevious = _CoxaInfo.JointCurrent;
 
-    _FemurInfo.JointCurrent = (_FemurInfo.JointDestination * 0.04) + (_FemurInfo.JointPrevious * 0.96);
+    _FemurInfo.JointCurrent = (_FemurInfo.JointDestination * 0.05) + (_FemurInfo.JointPrevious * 0.95);
     _FemurInfo.JointPrevious = _FemurInfo.JointCurrent;
 
-    _TibiaInfo.JointCurrent = (_TibiaInfo.JointDestination * 0.04) + (_TibiaInfo.JointPrevious * 0.96);
+    _TibiaInfo.JointCurrent = (_TibiaInfo.JointDestination * 0.05) + (_TibiaInfo.JointPrevious * 0.95);
     _TibiaInfo.JointPrevious = _TibiaInfo.JointCurrent;
 
     (*_CoxaJoint).write(_CoxaInfo.JointCurrent);
