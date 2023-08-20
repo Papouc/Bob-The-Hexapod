@@ -1,9 +1,10 @@
 #pragma once
 #include "StepCounter.h"
 
-class StraightStepCounter : public StepCounter
+class RotationStepCounter : public StepCounter
 {
 public:
-    StraightStepCounter();
+    RotationStepCounter();
     StepContainer GetStepInfo(int stepNumber) override;
 };
+

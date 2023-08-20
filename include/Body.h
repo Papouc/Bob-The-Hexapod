@@ -3,6 +3,7 @@
 #include "Leg.h"
 #include "StepCounter.h"
 #include "Direction.h"
+#include "Rotation.h"
 
 #define NUMBER_OF_LEGS 6
 
@@ -21,6 +22,7 @@ public:
     void ReachInitialPosition();
     void SetStancePosition();
     void SetNextStepPosition(enum Direction direction);
+    void SetNextTurnPosition(enum Rotation rotation);
     void MoveToPosistion();
     inline bool IsOnPosition() { return _OnPosition; }
 };

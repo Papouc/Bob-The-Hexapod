@@ -13,4 +13,5 @@ protected:
 public:
     virtual StepContainer GetStepInfo(int stepNumber) = 0;
     inline void Flip() { _Flipped = !_Flipped; }
+    inline bool IsFlipped() { return _Flipped; }
 };

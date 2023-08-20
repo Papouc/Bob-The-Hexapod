@@ -10,6 +10,8 @@ ulong currMillis;
 
 void setup()
 {
+    Serial.begin(9600);
+
     _Body = new Body();
     _Body->ReachInitialPosition();
 
@@ -25,7 +27,8 @@ void loop()
 
     if (_Body->IsOnPosition())
     {
-        _Body->SetNextStepPosition(Direction::FORWARD);
+        // _Body->SetNextTurnPosition(Rotation::LEFT);
+        // _Body->SetNextStepPosition(Direction::FORWARD);
     }
 
     if (currMillis - prevMillis >= TIMER_PERIOD)

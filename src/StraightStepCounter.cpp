@@ -2,7 +2,7 @@
 
 StraightStepCounter::StraightStepCounter()
 {
-    _ForwardPoint = Point(45, 50);
+    _ForwardPoint = Point(45, 45);
     _StancePoint = Point(50, 60);
     _ForwardStancePoint = Point(_ForwardPoint.X, _StancePoint.Z);
 }
@@ -11,7 +11,7 @@ StepContainer StraightStepCounter::GetStepInfo(int stepNumber)
 {
     StepContainer result = StepContainer();
 
-   if (stepNumber % 3 == 0)
+    if (stepNumber % 3 == 0)
     {
         if (_Flipped)
         {
@@ -33,7 +33,7 @@ StepContainer StraightStepCounter::GetStepInfo(int stepNumber)
         if (_Flipped)
         {
             result.EvenMoveTo = _StancePoint;
-            result.OddMoveTo  = _ForwardStancePoint;
+            result.OddMoveTo = _ForwardStancePoint;
             result.EvenRotation = 0;
             result.OddRotation = 15;
         }
@@ -47,20 +47,10 @@ StepContainer StraightStepCounter::GetStepInfo(int stepNumber)
     }
     else if (stepNumber % 3 == 2)
     {
-        if (_Flipped)
-        {
-            result.EvenMoveTo = _StancePoint;
-            result.OddMoveTo = _StancePoint;
-            result.EvenRotation = -4;
-            result.OddRotation = 0;
-        }
-        else
-        {
-            result.EvenMoveTo = _StancePoint;
-            result.OddMoveTo = _StancePoint;
-            result.EvenRotation = 0;
-            result.OddRotation = -4;
-        }
+        result.EvenMoveTo = _StancePoint;
+        result.OddMoveTo = _StancePoint;
+        result.EvenRotation = 0;
+        result.OddRotation = 0;
     }
 
     return result;

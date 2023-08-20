@@ -1,6 +1,7 @@
 #include "Body.h"
 #include "PinLayout.h"
 #include "StraightStepCounter.h"
+#include "RotationStepCounter.h"
 
 Body::Body()
 {
@@ -13,16 +14,16 @@ Body::Body()
     _Legs.push_back(new Leg(LEG_5_COXA_PIN, LEG_5_FEMUR_PIN, LEG_5_TIBIA_PIN, false));
     _Legs.push_back(new Leg(LEG_6_COXA_PIN, LEG_6_FEMUR_PIN, LEG_6_TIBIA_PIN, false));
 
-    _StepCounter = new StraightStepCounter();
+    _StepCounter = new RotationStepCounter();
 }
 
 void Body::ReachInitialPosition()
 {
     // fine tune those values to suit your specific build
-    _Legs.at(0)->SetDefaultPos(75, 96, 90);
+    _Legs.at(0)->SetDefaultPos(56, 96, 92);
     _Legs.at(1)->SetDefaultPos(90, 93, 92);
-    _Legs.at(2)->SetDefaultPos(102, 89, 98);
-    _Legs.at(3)->SetDefaultPos(90, 98, 86);
+    _Legs.at(2)->SetDefaultPos(102, 89, 100);
+    _Legs.at(3)->SetDefaultPos(90, 98, 83);
     _Legs.at(4)->SetDefaultPos(90, 102, 75);
     _Legs.at(5)->SetDefaultPos(90, 104, 88);
 
@@ -61,6 +62,35 @@ void Body::SetNextStepPosition(enum Direction direction)
     for (int i = 1; i < _Legs.size(); i += 2)
     {
         _Legs.at(i)->DetermineServoAngles(info.OddMoveTo, _StanceAngles[i] + info.OddRotation);
+    }
+
+    _OnPosition = false;
+    _StepNumber++;
+}
+
+void Body::SetNextTurnPosition(enum Rotation rotation)
+{
+    if (_StepNumber % 3 == 0)
+    {
+        _StepCounter->Flip();
+    }
+
+    StepContainer info = _StepCounter->GetStepInfo(_StepNumber);
+
+    info.EvenRotation *= (rotation == Rotation::RIGHT) ? 1 : -1;
+    info.OddRotation *= (rotation == Rotation::RIGHT) ? 1 : -1;
+
+    if (_StepCounter->IsFlipped())
+    {
+        _Legs.at(0)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[0] + info.EvenRotation);
+        _Legs.at(2)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[2] + info.EvenRotation);
+        _Legs.at(4)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[4] + info.OddRotation);
+    }
+    else
+    {
+        _Legs.at(1)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[1] - info.OddRotation);
+        _Legs.at(3)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[3] - info.EvenRotation);
+        _Legs.at(5)->DetermineServoAngles(info.EvenMoveTo, _StanceAngles[5] - info.EvenRotation);
     }
 
     _OnPosition = false;
