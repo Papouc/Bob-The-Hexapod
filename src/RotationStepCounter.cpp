@@ -35,3 +35,8 @@ StepContainer RotationStepCounter::GetStepInfo(int stepNumber)
 
     return result;
 }
+
+CounterType RotationStepCounter::GetCounterType() 
+{
+    return CounterType::ROTATION; 
+}

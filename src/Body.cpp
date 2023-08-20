@@ -14,7 +14,7 @@ Body::Body()
     _Legs.push_back(new Leg(LEG_5_COXA_PIN, LEG_5_FEMUR_PIN, LEG_5_TIBIA_PIN, false));
     _Legs.push_back(new Leg(LEG_6_COXA_PIN, LEG_6_FEMUR_PIN, LEG_6_TIBIA_PIN, false));
 
-    _StepCounter = new RotationStepCounter();
+    _StepCounter = new StraightStepCounter();
 }
 
 void Body::ReachInitialPosition()
@@ -44,6 +44,12 @@ void Body::SetStancePosition()
 
 void Body::SetNextStepPosition(enum Direction direction)
 {
+    if (_StepCounter->GetCounterType() != CounterType::STRAIGHT)
+    {
+        delete _StepCounter;
+        _StepCounter = new StraightStepCounter();
+    }
+
     if (_StepNumber % 3 == 0)
     {
         _StepCounter->Flip();
@@ -70,6 +76,12 @@ void Body::SetNextStepPosition(enum Direction direction)
 
 void Body::SetNextTurnPosition(enum Rotation rotation)
 {
+    if (_StepCounter->GetCounterType() != CounterType::ROTATION)
+    {
+        delete _StepCounter;
+        _StepCounter = new RotationStepCounter();
+    }
+
     if (_StepNumber % 3 == 0)
     {
         _StepCounter->Flip();

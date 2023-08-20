@@ -1,23 +1,25 @@
 #include <Arduino.h>
 #include "Body.h"
+#include "BtReciever.h"
+#include "PinLayout.h"
 
 #define TIMER_PERIOD 5
 
 Body *_Body = nullptr;
+BtReciever *_Reciever = nullptr;
 
 ulong prevMillis;
 ulong currMillis;
 
 void setup()
 {
-    Serial.begin(9600);
-
     _Body = new Body();
     _Body->ReachInitialPosition();
 
-    delay(6000);
+    _Reciever = new BtReciever(SERIAL_RX_PIN, SERIAL_TX_PIN);
 
-    // _Body->SetStancePosition();
+    delay(1000);
+
     prevMillis = millis();
 }
 
@@ -25,10 +27,32 @@ void loop()
 {
     currMillis = millis();
 
+    char data = _Reciever->GetData();
+
     if (_Body->IsOnPosition())
     {
-        // _Body->SetNextTurnPosition(Rotation::LEFT);
-        // _Body->SetNextStepPosition(Direction::FORWARD);
+        // ready for next move
+        switch (data)
+        {
+        case 'F':
+            _Body->SetNextStepPosition(Direction::FORWARD);
+            break;
+        case 'B':
+            _Body->SetNextStepPosition(Direction::BACKWARD);
+            break;
+        case 'L':
+            _Body->SetNextTurnPosition(Rotation::LEFT);
+            break;
+        case 'R':
+            _Body->SetNextTurnPosition(Rotation::RIGHT);
+            break;
+        case FIRST_CONNECT:
+            _Body->SetStancePosition();
+            break;
+        case DISCONNECT:
+            _Body->ReachInitialPosition();
+            break;
+        }
     }
 
     if (currMillis - prevMillis >= TIMER_PERIOD)

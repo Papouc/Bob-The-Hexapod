@@ -55,3 +55,8 @@ StepContainer StraightStepCounter::GetStepInfo(int stepNumber)
 
     return result;
 }
+
+CounterType StraightStepCounter::GetCounterType() 
+{
+    return CounterType::STRAIGHT; 
+}

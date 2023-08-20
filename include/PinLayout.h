@@ -23,3 +23,6 @@
 #define LEG_6_COXA_PIN 6
 #define LEG_6_FEMUR_PIN 7
 #define LEG_6_TIBIA_PIN 8
+
+#define SERIAL_RX_PIN 17
+#define SERIAL_TX_PIN 16

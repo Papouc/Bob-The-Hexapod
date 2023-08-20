@@ -1,6 +1,7 @@
 #pragma once
 #include "Point.h"
 #include "StepContainer.h"
+#include "CounterType.h"
 
 class StepCounter
 {
@@ -12,6 +13,7 @@ protected:
 
 public:
     virtual StepContainer GetStepInfo(int stepNumber) = 0;
+    virtual CounterType GetCounterType() = 0;
     inline void Flip() { _Flipped = !_Flipped; }
     inline bool IsFlipped() { return _Flipped; }
 };
